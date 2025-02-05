@@ -4,6 +4,8 @@
  */
 package ui;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author 20221074010064
@@ -42,7 +44,7 @@ public class TrianguloUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        painel.setBackground(new java.awt.Color(102, 255, 153));
+        painel.setBackground(new java.awt.Color(255, 204, 204));
         painel.setForeground(new java.awt.Color(153, 153, 153));
         painel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
 
@@ -212,7 +214,9 @@ public class TrianguloUI extends javax.swing.JFrame {
     private void cTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cTFActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cTFActionPerformed
-
+    public static boolean isTriangle(double a, double b, double c) {
+        return a + b > c && a + c > b && b + c > a;
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         double a = Double.parseDouble(aTF.getText());
         double b = Double.parseDouble(bTF.getText());
@@ -222,12 +226,44 @@ public class TrianguloUI extends javax.swing.JFrame {
         areaLabel.setText("Calcule a área!");
         
     }//GEN-LAST:event_jButton1ActionPerformed
+   private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
+        if (aTF.getText().equals("")
+                || bTF.getText().equals("")
+                || cTF.getText().equals("")) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Preencha todos os lados!",
+                    "ERRO",
+                    //                JOptionPane.INFORMATION_MESSAGE
+                    //                JOptionPane.WARNING_MESSAGE
+                    JOptionPane.ERROR_MESSAGE
+            //                JOptionPane.QUESTION_MESSAGE
+            //                JOptionPane.PLAIN_MESSAGE
+            );
+        } else {
+            double a = Double.parseDouble(aTF.getText());
+            double b = Double.parseDouble(bTF.getText());
+            double c = Double.parseDouble(cTF.getText());
+
+            if (isTriangle(a, b, c)) {
+                tipoLabel.setText("Tipo = " + typeTriangle(a, b, c));
+                areaLabel.setText(String.format("Área = %.4f", areaTriangle(a, b, c)));
+            } else {
+                tipoLabel.setText("NÃO É um triângulo!");
+                tipoLabel.setForeground(Color.red);
+                areaLabel.setText("");
+            }
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+   
     private void textoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textoMouseClicked
         aTF.setText("");
         bTF.setText("");
         cTF.setText("");
         tipoLabel.setText("Tipo de triângulo = ?");
+        tipoLabel..setForeground(Color.black);
         areaLabel.setText("Área = ?");
     }//GEN-LAST:event_textoMouseClicked
 
@@ -260,11 +296,29 @@ public class TrianguloUI extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new TrianguloUI().setVisible(true);
             }
         });
     }
+   
+    public static String typeTriangle(double a, double b, double c) {
+        if (a == b && b == c) {
+            return "EQUILÁTERO";
+        } else if (a == b || b == c || a == c) {
+            return "ISÓCELES";
+        } else {
+            return "Escaleno";
+        }
+    }
+   
+    public static double areaTriangle(double a, double b, double c) {
+        double p = (a + b + c) / 2;
+       
+        return Math.sqrt(p * (p - a) * (p - b) * (p - c));
+    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField aTF;
